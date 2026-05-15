@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  // Use environment variable for the API URL, or fallback to local dev URL
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  // Use environment variable for the API URL, or fallback to relative path
+  baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 // Add a request interceptor to attach JWT token
