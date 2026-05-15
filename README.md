@@ -95,5 +95,3 @@ VITE_API_URL=http://localhost:5000/api
 -   **Root Configuration**: Use the provided `Procfile` for one-click deployment.
 
 ---
-
-Built with ❤️ by Antigravity AI.
