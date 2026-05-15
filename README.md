@@ -95,3 +95,8 @@ VITE_API_URL=http://localhost:5000/api
 -   **Root Configuration**: Use the provided `Procfile` for one-click deployment.
 
 ---
+Live Application URL:
+https://web-production-38f0d.up.railway.app/
+
+
+
