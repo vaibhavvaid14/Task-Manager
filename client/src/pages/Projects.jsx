@@ -139,21 +139,6 @@ const Projects = () => {
                   </span>
                 </div>
                 
-                {user?.role === 'Admin' && (
-                  <div className="flex gap-1">
-                    <button 
-                      onClick={(e) => handleEditClick(e, project)}
-                      className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                    >
-                      <Edit2 size={14} />
-                    </button>
-                    <button 
-                      onClick={(e) => handleDeleteProject(e, project._id)}
-                      className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
                 )}
               </div>
               

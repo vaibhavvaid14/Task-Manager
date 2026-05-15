@@ -67,11 +67,9 @@ const ProjectDetails = () => {
         </div>
         
         <div className="flex items-center gap-3">
-          {user?.role === 'Admin' && (
-            <button className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-medium transition-colors">
-              Edit Project
-            </button>
-          )}
+          <button className="px-4 py-2 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg font-medium transition-colors">
+            Edit Project
+          </button>
           <button
             onClick={() => setShowTaskModal(true)}
             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark font-medium transition-colors flex items-center gap-2"
