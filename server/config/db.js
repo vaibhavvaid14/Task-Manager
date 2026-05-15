@@ -15,10 +15,15 @@ const sequelize = new Sequelize(databaseUrl, {
 
 const connectDB = async () => {
   try {
+    if (!process.env.DATABASE_URL) {
+      console.error('DATABASE_URL is missing from environment variables!');
+    }
     await sequelize.authenticate();
-    console.log('PostgreSQL Connected...');
+    console.log('PostgreSQL Connected Successfully');
   } catch (error) {
-    console.error(`Error: ${error.message}`);
+    console.error('DATABASE CONNECTION ERROR:');
+    console.error('Message:', error.message);
+    if (error.original) console.error('Original Error:', error.original.message);
     process.exit(1);
   }
 };

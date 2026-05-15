@@ -7,6 +7,13 @@ const path = require('path');
 // Initialize express
 const app = express();
 
+// Debug Environment
+console.log('Environment Check:');
+console.log('- DATABASE_URL present:', !!process.env.DATABASE_URL);
+console.log('- JWT_SECRET present:', !!process.env.JWT_SECRET);
+console.log('- PORT:', process.env.PORT);
+console.log('- NODE_ENV:', process.env.NODE_ENV);
+
 // Middleware
 app.use(cors());
 app.use(express.json());
