@@ -18,14 +18,22 @@ console.log('- NODE_ENV:', process.env.NODE_ENV);
 app.use(cors());
 app.use(express.json());
 
-// Basic Route / Health Check
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'UP', message: 'Task Manager API is running' });
-});
+// Basic Route // Health check
+app.get('/api/health', (req, res) => res.json({ status: 'ok', database: 'connected' }));
 
-app.get('/', (req, res) => {
-  res.send('API is running...');
-});
+// Serve Static Assets in Production
+if (process.env.NODE_ENV === 'production') {
+  // Set static folder
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+  });
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running...');
+  });
+}
 
 // Define Routes
 app.use('/api/auth', require('./routes/authRoutes'));
