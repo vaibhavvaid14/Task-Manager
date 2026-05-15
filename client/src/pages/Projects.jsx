@@ -138,8 +138,6 @@ const Projects = () => {
                     {project.priority}
                   </span>
                 </div>
-                
-                )}
               </div>
               
               <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors line-clamp-1">
