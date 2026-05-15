@@ -29,15 +29,15 @@ TaskMgr is a production-ready, full-stack SaaS application built for modern team
 
 ### Backend
 -   **Node.js & Express.js** (Fast and scalable server)
--   **MongoDB Atlas & Mongoose** (NoSQL database integration)
+*   **PostgreSQL & Sequelize** (SQL database with ORM)
 -   **JWT (JSON Web Tokens)** (Secure stateless authentication)
 -   **Bcrypt.js** (Password hashing)
 
 ## ⚙️ Getting Started
 
 ### Prerequisites
--   Node.js (v16+)
--   MongoDB Atlas account (or local MongoDB)
+-   Node.js (v18+)
+*   PostgreSQL database
 
 ### Installation
 
@@ -47,47 +47,52 @@ TaskMgr is a production-ready, full-stack SaaS application built for modern team
     cd Task-Manager
     ```
 
-2.  **Setup Backend**
+2.  **Install all dependencies** (Root, Client, and Server)
     ```bash
-    cd server
-    npm install
-    # Create a .env file based on .env.example
-    # Add your MONGO_URI and JWT_SECRET
-    npm run dev
+    npm run install-all
     ```
 
-3.  **Setup Frontend**
+3.  **Setup Environment Variables**
+    - Create a `.env` file in the root directory (see `.env.example`).
+    - Add your `DATABASE_URL`, `JWT_SECRET`, and `VITE_API_URL`.
+
+4.  **Run Development Server**
     ```bash
-    cd client
-    npm install
     npm run dev
     ```
 
 ### Environment Variables (.env)
 
-**Server:**
+**Root / Server:**
 ```env
 PORT=5000
-MONGO_URI=your_mongodb_connection_string
+DATABASE_URL=postgres://user:password@localhost:5432/taskmanager
 JWT_SECRET=your_super_secret_key
+JWT_EXPIRES_IN=30d
 NODE_ENV=development
+```
+
+**Client:**
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
 
 ## 📈 Database Models
 
 ### User
--   `name`, `email`, `password`, `role` (Admin/Member), `avatar`
+-   `name`, `email`, `password`, `role` (Admin/Member), `profileImage`
 
 ### Project
--   `title`, `description`, `teamMembers` (Refs to User), `deadline`, `priority`, `status`, `progressPercentage`
+-   `title`, `description`, `teamMembers` (Many-to-Many), `deadline`, `priority`, `status`, `progressPercentage`, `createdBy`
 
 ### Task
--   `title`, `description`, `project` (Ref to Project), `assignedUser` (Ref to User), `status`, `priority`, `dueDate`
+-   `title`, `description`, `project` (Ref to Project), `assignedUser` (Ref to User), `status`, `priority`, `dueDate`, `createdBy`
 
 ## 📦 Deployment
 
--   **Backend**: Ready for Railway, Render, or Heroku.
--   **Frontend**: Optimized for Vercel or Netlify.
+-   **Backend**: Optimized for **Railway** with PostgreSQL.
+-   **Frontend**: Can be served via the backend or deployed to Vercel/Netlify.
+-   **Root Configuration**: Use the provided `Procfile` for one-click deployment.
 
 ---
 
