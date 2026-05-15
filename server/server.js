@@ -21,12 +21,18 @@ app.use(express.json());
 // Basic Route // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'ok', database: 'connected' }));
 
+// Define Routes
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/projects', require('./routes/projectRoutes'));
+app.use('/api/tasks', require('./routes/taskRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+
 // Serve Static Assets in Production
 if (process.env.NODE_ENV === 'production') {
   const publicPath = path.join(__dirname, '..', 'client', 'dist');
   app.use(express.static(publicPath));
 
-  app.get('*', (req, res) => {
+  app.get('/*', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
   });
 } else {
@@ -34,12 +40,6 @@ if (process.env.NODE_ENV === 'production') {
     res.send('API is running...');
   });
 }
-
-// Define Routes
-app.use('/api/auth', require('./routes/authRoutes'));
-app.use('/api/projects', require('./routes/projectRoutes'));
-app.use('/api/tasks', require('./routes/taskRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
 
 // Database Connection and Server Start
 const PORT = process.env.PORT || 5000;
