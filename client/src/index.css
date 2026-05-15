@@ -80,12 +80,13 @@
   }
 
   .btn-primary {
-    @apply btn-premium gradient-brand text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:opacity-90 animate-shimmer;
+    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 text-white shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:opacity-90 animate-shimmer;
+    background: linear-gradient(135deg, var(--color-brand-start) 0%, var(--color-brand-end) 100%);
     background-size: 200% 100%;
   }
 
   .btn-secondary {
-    @apply btn-premium bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm;
+    @apply relative overflow-hidden px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 bg-white text-slate-900 border border-slate-200 hover:bg-slate-50 hover:border-slate-300 shadow-sm;
   }
 
   /* Animations */
