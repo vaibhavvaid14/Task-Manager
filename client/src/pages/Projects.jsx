@@ -1,16 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, FolderKanban, Calendar, Users, Loader2, Edit2, Trash2 } from 'lucide-react';
+import { 
+  Plus, FolderKanban, Calendar, Users, Loader2, Edit2, Trash2, 
+  Search, Filter, MoreVertical, LayoutGrid, List as ListIcon,
+  Clock, CheckCircle2, AlertCircle, ArrowUpRight
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
 import CreateProjectModal from '../components/projects/CreateProjectModal';
+import { motion } from 'framer-motion';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [projectToEdit, setProjectToEdit] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
@@ -50,60 +56,78 @@ const Projects = () => {
   };
 
   const handleProjectSaved = (savedProject) => {
-    if (projectToEdit) {
-      setProjects(projects.map(p => p._id === savedProject._id ? savedProject : p));
-    } else {
-      setProjects([savedProject, ...projects]);
-    }
-    fetchProjects(); // Refresh to get populated data
+    fetchProjects(); 
   };
+
+  const filteredProjects = projects.filter(p => 
+    p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-full min-h-[400px]">
-        <Loader2 className="animate-spin h-10 w-10 text-primary" />
+      <div className="flex flex-col justify-center items-center h-full min-h-[400px] gap-4">
+        <div className="relative">
+          <Loader2 className="animate-spin h-12 w-12 text-accent" />
+          <div className="absolute inset-0 blur-xl bg-accent/20 animate-pulse" />
+        </div>
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading Projects...</p>
       </div>
     );
   }
 
-  const getStatusColor = (status) => {
+  const getStatusConfig = (status) => {
     switch(status) {
-      case 'Completed': return 'bg-emerald-100 text-emerald-700';
-      case 'In Progress': return 'bg-blue-100 text-blue-700';
-      case 'Delayed': return 'bg-red-100 text-red-700';
-      default: return 'bg-slate-100 text-slate-700';
+      case 'Completed': return { color: 'text-emerald-500', bg: 'bg-emerald-50', icon: CheckCircle2 };
+      case 'In Progress': return { color: 'text-blue-500', bg: 'bg-blue-50', icon: Clock };
+      case 'Delayed': return { color: 'text-red-500', bg: 'bg-red-50', icon: AlertCircle };
+      default: return { color: 'text-slate-500', bg: 'bg-slate-50', icon: FolderKanban };
     }
   };
 
   const getPriorityColor = (priority) => {
     switch(priority) {
-      case 'High': return 'text-red-600 bg-red-50';
-      case 'Medium': return 'text-amber-600 bg-amber-50';
-      case 'Low': return 'text-emerald-600 bg-emerald-50';
-      default: return 'text-slate-600 bg-slate-50';
+      case 'High': return 'text-red-500 bg-red-50';
+      case 'Medium': return 'text-amber-500 bg-amber-50';
+      case 'Low': return 'text-emerald-500 bg-emerald-50';
+      default: return 'text-slate-500 bg-slate-50';
     }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="space-y-10 pb-10">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Projects</h1>
-          <p className="text-slate-600 mt-1">Manage and track your team's projects.</p>
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mb-2">
+            Active <span className="gradient-text">Projects</span>
+          </h1>
+          <p className="text-slate-500 font-medium">Manage, track, and collaborate on your team's initiatives.</p>
         </div>
         
-        {user?.role === 'Admin' && (
-          <button 
-            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
-            onClick={() => {
-              setProjectToEdit(null);
-              setShowCreateModal(true);
-            }}
-          >
-            <Plus size={20} />
-            New Project
-          </button>
-        )}
+        <div className="flex items-center gap-3 w-full lg:w-auto">
+          <div className="relative flex-1 lg:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+            <input 
+              type="text" 
+              placeholder="Search projects..." 
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-sm"
+            />
+          </div>
+          {user?.role === 'Admin' && (
+            <button 
+              className="btn-primary"
+              onClick={() => {
+                setProjectToEdit(null);
+                setShowCreateModal(true);
+              }}
+            >
+              <Plus size={20} />
+              New Project
+            </button>
+          )}
+        </div>
       </div>
 
       <CreateProjectModal
@@ -113,67 +137,107 @@ const Projects = () => {
         projectToEdit={projectToEdit}
       />
 
-      {projects.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center">
-          <div className="mx-auto w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-            <FolderKanban className="h-8 w-8 text-slate-400" />
+      {filteredProjects.length === 0 ? (
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="card-premium p-16 text-center bg-white/50 backdrop-blur-sm border-dashed border-2"
+        >
+          <div className="mx-auto w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center mb-6 border border-slate-100">
+            <FolderKanban className="h-10 w-10 text-slate-300" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 mb-2">No projects found</h3>
-          <p className="text-slate-500">Get started by creating your first project.</p>
-        </div>
+          <h3 className="text-xl font-black text-slate-900 mb-2">No projects found</h3>
+          <p className="text-slate-500 font-medium max-w-xs mx-auto mb-8">
+            {searchQuery ? `No results for "${searchQuery}"` : "Your workspace is empty. Create your first project to get started!"}
+          </p>
+          {!searchQuery && user?.role === 'Admin' && (
+            <button className="btn-primary" onClick={() => setShowCreateModal(true)}>
+              Initialize Project
+            </button>
+          )}
+        </motion.div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map((project) => (
-            <Link 
-              key={project._id} 
-              to={`/projects/${project._id}`}
-              className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[rgba(170,59,255,0.08)_0px_10px_20px] transition-all group relative"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex gap-2">
-                  <span className={`px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-md ${getStatusColor(project.status)}`}>
-                    {project.status}
-                  </span>
-                  <span className={`px-2.5 py-1 text-[10px] uppercase tracking-wider font-bold rounded-md ${getPriorityColor(project.priority)}`}>
-                    {project.priority}
-                  </span>
-                </div>
-              </div>
-              
-              <h3 className="text-lg font-bold text-slate-900 mb-2 group-hover:text-primary transition-colors line-clamp-1">
-                {project.title}
-              </h3>
-              <p className="text-slate-500 text-sm mb-6 line-clamp-2 min-h-[40px]">
-                {project.description}
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {filteredProjects.map((project, i) => {
+            const statusInfo = getStatusConfig(project.status);
+            const StatusIcon = statusInfo.icon;
+            
+            return (
+              <motion.div 
+                key={project._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+              >
+                <Link 
+                  to={`/projects/${project._id}`}
+                  className="card-premium p-8 bg-white flex flex-col h-full group relative overflow-hidden"
+                >
+                  {/* Hover Accent */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-[100px] -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+                  
+                  <div className="flex justify-between items-start mb-6 relative z-10">
+                    <div className={`p-3 rounded-2xl ${statusInfo.bg} group-hover:scale-110 transition-transform duration-300`}>
+                      <StatusIcon className={`h-6 w-6 ${statusInfo.color}`} />
+                    </div>
+                    <div className="flex gap-2">
+                      <span className={`px-2.5 py-1 text-[10px] font-black uppercase tracking-widest rounded-lg shadow-sm ${getPriorityColor(project.priority)}`}>
+                        {project.priority}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 relative z-10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-xl font-black text-slate-900 tracking-tight group-hover:text-accent transition-colors line-clamp-1">
+                        {project.title}
+                      </h3>
+                      <ArrowUpRight size={18} className="text-slate-300 group-hover:text-accent group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
+                    </div>
+                    <p className="text-slate-500 font-medium text-sm mb-8 line-clamp-2 min-h-[40px] leading-relaxed">
+                      {project.description}
+                    </p>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar size={14} className="text-slate-400" />
-                    {new Date(project.deadline).toLocaleDateString()}
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <Users size={14} className="text-slate-400" />
-                    {project.teamMembers?.length || 0} Members
-                  </div>
-                </div>
+                    <div className="space-y-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex -space-x-3 overflow-hidden">
+                          {[1, 2, 3].map((_, idx) => (
+                            <div key={idx} className="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">
+                              {project.teamMembers?.[idx]?.name?.charAt(0) || <Users size={12} />}
+                            </div>
+                          ))}
+                          {(project.teamMembers?.length > 3) && (
+                            <div className="w-8 h-8 rounded-full border-2 border-white bg-slate-900 flex items-center justify-center text-[10px] font-bold text-white">
+                              +{project.teamMembers.length - 3}
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                          <Clock size={14} />
+                          {new Date(project.deadline).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                        </div>
+                      </div>
 
-                <div>
-                  <div className="flex justify-between text-xs mb-1.5 font-bold">
-                    <span className="text-slate-500 uppercase tracking-tight">Progress</span>
-                    <span className="text-slate-900">{project.progressPercentage || 0}%</span>
+                      <div>
+                        <div className="flex justify-between items-end mb-2">
+                          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Workspace Progress</span>
+                          <span className="text-sm font-black text-slate-900">{project.progressPercentage || 0}%</span>
+                        </div>
+                        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${project.progressPercentage || 0}%` }}
+                            transition={{ duration: 1, ease: "easeOut" }}
+                            className="h-full bg-gradient-to-r from-primary via-accent to-primary bg-[length:200%_100%] animate-shimmer rounded-full shadow-[0_0_10px_rgba(59,130,246,0.3)]"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
-                    <div 
-                      className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-500"
-                      style={{ width: `${project.progressPercentage || 0}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </Link>
-          ))}
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       )}
     </div>

@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Shield, Loader2, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, User, Shield, Loader2, CheckCircle2, CheckSquare, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { AuthContext } from '../context/AuthContext';
+import { motion } from 'framer-motion';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -29,7 +30,6 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Basic Validation
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       toast.error('Please fill in all required fields');
       return;
@@ -47,12 +47,10 @@ const Signup = () => {
 
     setIsSubmitting(true);
     try {
-      console.log('Sending signup request for:', formData.email);
       await register(formData.name, formData.email, formData.password, formData.role);
       toast.success('Account created successfully!');
       navigate('/dashboard');
     } catch (error) {
-      console.error('Signup frontend error:', error);
       const errorMsg = error.response?.data?.message || 'Error creating account. Please try again.';
       toast.error(errorMsg);
     } finally {
@@ -61,134 +59,154 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 sm:px-6 lg:px-8 py-12">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-[0_20px_50px_rgba(59,130,246,0.1)] border border-slate-100">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-accent/10 rounded-xl flex items-center justify-center mb-4">
-            <User className="h-6 w-6 text-accent" />
-          </div>
-          <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Create an account</h2>
-          <p className="mt-2 text-sm text-slate-500 font-medium">
-            Join TaskMgr and start managing your team's work.
-          </p>
-        </div>
-
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">Full Name</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all sm:text-sm bg-slate-50/50"
-                  placeholder="John Doe"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">Email Address</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-slate-400" />
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all sm:text-sm bg-slate-50/50"
-                  placeholder="name@company.com"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Password</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400" />
-                  </div>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all sm:text-sm bg-slate-50/50"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Confirm</label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <CheckCircle2 className="h-5 w-5 text-slate-400" />
-                  </div>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all sm:text-sm bg-slate-50/50"
-                    placeholder="••••••••"
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">Your Role</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Shield className="h-5 w-5 text-slate-400" />
-                </div>
-                <select
-                  name="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all sm:text-sm appearance-none bg-slate-50/50"
-                >
-                  <option value="Member">Team Member</option>
-                  <option value="Admin">Administrator</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-sm font-bold text-white bg-gradient-to-r from-primary to-accent hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-70 disabled:cursor-not-allowed transition-all"
-          >
-            {isSubmitting ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="animate-spin h-5 w-5" /> Creating Account...
-              </div>
-            ) : 'Create My Account'}
-          </button>
-        </form>
-
-        <div className="text-center mt-6 pt-6 border-t border-slate-100">
-          <p className="text-sm text-slate-500 font-medium">
-            Already have an account?{' '}
-            <Link to="/login" className="font-bold text-primary hover:text-primary-dark transition-colors">
-              Sign in here
-            </Link>
-          </p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-white px-4 py-20 overflow-hidden relative">
+      {/* Decorative BG */}
+      <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-30">
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-accent/10 rounded-full blur-[120px] animate-float" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-100/20 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
       </div>
+
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="max-w-xl w-full"
+      >
+        <div className="text-center mb-10">
+          <Link to="/" className="inline-flex items-center gap-2.5 mb-8 group">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-110 transition-transform duration-300">
+              <CheckSquare className="w-6 h-6 text-white" />
+            </div>
+            <span className="text-2xl font-black tracking-tighter text-slate-900">TaskMgr</span>
+          </Link>
+          <h2 className="text-4xl font-black tracking-tight text-slate-900 mb-2">Create Account</h2>
+          <p className="text-slate-500 font-medium italic">
+            Join thousands of teams shipping faster every day.
+          </p>
+        </div>
+
+        <div className="card-premium p-8 sm:p-10 bg-white shadow-2xl shadow-slate-200/50">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Full Name</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-slate-300 group-focus-within:text-accent transition-colors" />
+                  </div>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="block w-full pl-12 pr-4 py-3.5 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 placeholder:text-slate-300"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Mail className="h-5 w-5 text-slate-300 group-focus-within:text-accent transition-colors" />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="block w-full pl-12 pr-4 py-3.5 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 placeholder:text-slate-300"
+                    placeholder="name@company.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Password</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Lock className="h-5 w-5 text-slate-300 group-focus-within:text-accent transition-colors" />
+                    </div>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="block w-full pl-12 pr-4 py-3.5 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 placeholder:text-slate-300"
+                      placeholder="••••••••"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Confirm</label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <CheckCircle2 className="h-5 w-5 text-slate-300 group-focus-within:text-accent transition-colors" />
+                    </div>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      className="block w-full pl-12 pr-4 py-3.5 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 placeholder:text-slate-300"
+                      placeholder="••••••••"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Your Role</label>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <Shield className="h-5 w-5 text-slate-300 group-focus-within:text-accent transition-colors" />
+                  </div>
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleChange}
+                    className="block w-full pl-12 pr-4 py-3.5 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
+                  >
+                    <option value="Member">Team Member</option>
+                    <option value="Admin">Administrator</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full btn-primary py-4 text-base shadow-xl shadow-blue-500/20 active:scale-[0.98] transition-transform"
+            >
+              {isSubmitting ? (
+                <div className="flex items-center gap-3">
+                  <Loader2 className="animate-spin h-5 w-5" /> Creating Account...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  Get Started Now <ArrowRight size={20} />
+                </div>
+              )}
+            </button>
+          </form>
+
+          <div className="mt-10 pt-8 border-t border-slate-50 text-center">
+            <p className="text-sm text-slate-500 font-medium">
+              Already have an account?{' '}
+              <Link to="/login" className="font-bold text-accent hover:underline decoration-2 underline-offset-4 transition-all">
+                Sign in here
+              </Link>
+            </p>
+          </div>
+        </div>
+      </motion.div>
     </div>
   );
 };

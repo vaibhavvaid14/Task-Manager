@@ -106,68 +106,69 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated, projectId = null, tas
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={taskToEdit ? "Edit Task" : "Create New Task"}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         {isLoading ? (
-          <div className="flex justify-center py-8">
-            <Loader2 className="animate-spin h-8 w-8 text-primary" />
+          <div className="flex flex-col items-center justify-center py-12 gap-4">
+            <Loader2 className="animate-spin h-10 w-10 text-accent" />
+            <p className="text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading Workspace...</p>
           </div>
         ) : (
           <>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Task Title *</label>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Task Title</label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50"
                 placeholder="e.g. Design homepage mockup"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
+              <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Description</label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none min-h-[80px]"
-                placeholder="Describe the task..."
+                className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 min-h-[100px]"
+                placeholder="What needs to be done?"
                 required
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Due Date *</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Due Date</label>
                 <input
                   type="date"
                   value={dueDate}
                   onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                  className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50"
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Priority</label>
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                  className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
                 >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
+                  <option value="Low">Low Priority</option>
+                  <option value="Medium">Medium Priority</option>
+                  <option value="High">High Priority</option>
                 </select>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Status</label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                  className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
                 >
                   <option value="Todo">Todo</option>
                   <option value="In Progress">In Progress</option>
@@ -176,15 +177,15 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated, projectId = null, tas
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Assign To</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Assign To</label>
                 <select
                   value={assignedUser}
                   onChange={(e) => setAssignedUser(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                  className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
                 >
                   <option value="">Unassigned</option>
                   {users.map(u => (
-                    <option key={u._id} value={u._id}>{u.name} ({u.email})</option>
+                    <option key={u._id} value={u._id}>{u.name}</option>
                   ))}
                 </select>
               </div>
@@ -192,11 +193,11 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated, projectId = null, tas
 
             {!projectId && (
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Project *</label>
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Project</label>
                 <select
                   value={project}
                   onChange={(e) => setProject(e.target.value)}
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+                  className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
                   required
                 >
                   <option value="">Select a project...</option>
@@ -207,21 +208,21 @@ const CreateTaskModal = ({ isOpen, onClose, onTaskCreated, projectId = null, tas
               </div>
             )}
 
-            <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
+            <div className="pt-6 flex justify-end gap-3 border-t border-slate-50 mt-6">
               <button
                 type="button"
                 onClick={handleClose}
-                className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+                className="btn-secondary"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-dark rounded-lg flex items-center gap-2 transition-colors disabled:opacity-70"
+                className="btn-primary"
               >
                 {isSubmitting && <Loader2 className="animate-spin h-4 w-4" />}
-                {taskToEdit ? 'Update Task' : 'Create Task'}
+                {taskToEdit ? 'Save Changes' : 'Create Task'}
               </button>
             </div>
           </>

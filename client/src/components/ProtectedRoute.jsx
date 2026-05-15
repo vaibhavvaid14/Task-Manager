@@ -7,8 +7,12 @@ const ProtectedRoute = ({ children, adminOnly = false }) => {
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      <div className="flex flex-col h-screen items-center justify-center bg-slate-50 gap-4">
+        <div className="relative">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-accent"></div>
+          <div className="absolute inset-0 blur-xl bg-accent/20 animate-pulse" />
+        </div>
+        <p className="text-slate-400 font-black uppercase tracking-widest text-[10px]">Authorizing Session...</p>
       </div>
     );
   }

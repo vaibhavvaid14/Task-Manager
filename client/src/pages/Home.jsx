@@ -1,110 +1,110 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import {
   CheckSquare, Users, BarChart2, Zap, Shield, Globe,
-  ArrowRight, Star, ChevronRight
+  ArrowRight, Star, ChevronRight, Play, Layout, Rocket
 } from 'lucide-react';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { type: "spring", stiffness: 100 },
+  },
+};
 
 const features = [
   {
-    icon: CheckSquare,
-    title: 'Task Management',
-    desc: 'Create, assign, and track tasks with a beautiful Kanban board. Never miss a deadline again.',
+    icon: Layout,
+    title: 'Intuitive Kanban',
+    desc: 'Visualize your workflow with our advanced Kanban boards. Drag, drop, and deliver faster than ever.',
     color: 'text-blue-500',
     bg: 'bg-blue-50',
   },
   {
     icon: Users,
-    title: 'Team Collaboration',
-    desc: 'Invite team members, assign roles, and collaborate seamlessly across projects.',
-    color: 'text-purple-500',
-    bg: 'bg-purple-50',
+    title: 'Team Dynamics',
+    desc: 'Empower your team with role-based permissions, collaborative comments, and real-time activity feeds.',
+    color: 'text-indigo-500',
+    bg: 'bg-indigo-50',
   },
   {
     icon: BarChart2,
-    title: 'Analytics Dashboard',
-    desc: 'Real-time insights on project progress, team performance and overdue tasks at a glance.',
+    title: 'Deep Analytics',
+    desc: 'Data-driven insights to optimize your team\'s performance and identify bottlenecks before they happen.',
     color: 'text-emerald-500',
     bg: 'bg-emerald-50',
   },
   {
-    icon: Zap,
-    title: 'Fast & Reliable',
-    desc: 'Lightning-fast performance with real-time updates. Built for teams that move quickly.',
-    color: 'text-amber-500',
-    bg: 'bg-amber-50',
+    icon: Rocket,
+    title: 'Rapid Deployment',
+    desc: 'Built for speed. Our platform ensures lightning-fast updates and zero downtime for your critical projects.',
+    color: 'text-purple-500',
+    bg: 'bg-purple-50',
   },
   {
     icon: Shield,
-    title: 'Role-Based Access',
-    desc: 'Admins control everything. Members see what they need. Secure and structured by design.',
-    color: 'text-red-500',
-    bg: 'bg-red-50',
+    title: 'Enterprise Security',
+    desc: 'Bank-grade encryption and secure access controls to keep your proprietary project data safe.',
+    color: 'text-slate-700',
+    bg: 'bg-slate-100',
   },
   {
-    icon: Globe,
-    title: 'Work from Anywhere',
-    desc: 'Fully responsive design that works perfectly on desktop, tablet, and mobile devices.',
-    color: 'text-cyan-500',
-    bg: 'bg-cyan-50',
+    icon: Zap,
+    title: 'Smart Automation',
+    desc: 'Automate repetitive tasks and focus on what matters most — building great products.',
+    color: 'text-amber-500',
+    bg: 'bg-amber-50',
   },
-];
-
-const testimonials = [
-  {
-    name: 'Sarah Johnson',
-    role: 'Product Manager, Acme Inc.',
-    text: 'TaskMgr transformed how our team works. We went from chaos to clarity in just one week. Absolutely love it!',
-    rating: 5,
-    avatar: 'S',
-  },
-  {
-    name: 'Michael Chen',
-    role: 'Engineering Lead, TechCorp',
-    text: 'The Kanban board and analytics dashboard are exactly what we needed. Our productivity increased by 40%.',
-    rating: 5,
-    avatar: 'M',
-  },
-  {
-    name: 'Emily Davis',
-    role: 'Freelancer & Team Lead',
-    text: 'Finally a project management tool that doesn\'t get in the way. Clean, fast, and powerful.',
-    rating: 5,
-    avatar: 'E',
-  },
-];
-
-const stats = [
-  { value: '10,000+', label: 'Active Users' },
-  { value: '500+', label: 'Teams Onboarded' },
-  { value: '99.9%', label: 'Uptime SLA' },
-  { value: '40%', label: 'Productivity Boost' },
 ];
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white selection:bg-accent/20">
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="flex items-center justify-between h-20">
+            <div className="flex items-center gap-2.5 group cursor-pointer">
+              <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform">
                 <CheckSquare className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold gradient-text">TaskMgr</span>
+              <span className="text-2xl font-black tracking-tighter text-slate-900">
+                Task<span className="gradient-text">Mgr</span>
+              </span>
             </div>
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Features</a>
-              <a href="#testimonials" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Testimonials</a>
-              <a href="#pricing" className="text-sm font-medium text-slate-600 hover:text-primary transition-colors">Pricing</a>
+            
+            <div className="hidden md:flex items-center gap-10">
+              {['Features', 'Testimonials', 'Pricing'].map((item) => (
+                <a 
+                  key={item}
+                  href={`#${item.toLowerCase()}`} 
+                  className="text-sm font-bold text-slate-500 hover:text-accent transition-colors tracking-tight"
+                >
+                  {item}
+                </a>
+              ))}
             </div>
-            <div className="flex items-center gap-3">
-              <Link to="/login" className="text-sm font-medium text-slate-700 hover:text-primary transition-colors px-4 py-2 rounded-lg hover:bg-slate-50">
+
+            <div className="flex items-center gap-4">
+              <Link to="/login" className="hidden sm:block text-sm font-bold text-slate-600 hover:text-primary transition-colors px-4 py-2">
                 Sign In
               </Link>
-              <Link to="/signup" className="text-sm font-medium text-white px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-accent hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">
-                Get Started Free
+              <Link to="/signup" className="btn-primary py-2.5">
+                Start Free Trial
               </Link>
             </div>
           </div>
@@ -112,205 +112,207 @@ const Home = () => {
       </nav>
 
       {/* Hero Section */}
-      <section className="hero-gradient min-h-screen flex items-center pt-16 overflow-hidden relative">
-        {/* BG blobs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full opacity-20 blur-3xl animate-float"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-200 rounded-full opacity-20 blur-3xl animate-float-delay"></div>
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* Background Decorative Elements */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-100/40 rounded-full blur-[120px] animate-float" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-100/40 rounded-full blur-[120px] animate-float" style={{ animationDelay: '2s' }} />
+        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
-          <div className="text-center max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-100 rounded-full text-blue-600 text-sm font-medium mb-8 animate-slide-up">
-              <Zap size={14} className="text-blue-500" />
-              Built for modern teams — Free to get started
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 bg-accent/5 border border-accent/10 rounded-full text-accent text-xs font-bold uppercase tracking-widest mb-10 animate-pulse-soft">
+              <Zap size={14} className="fill-accent" />
+              Version 2.0 is now live
             </div>
 
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
-              Manage Your Team's{' '}
-              <span className="gradient-text">Projects & Tasks</span>{' '}
-              Like a Pro
+            <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black tracking-tight text-slate-900 mb-8 leading-[0.95]">
+              Streamline your <br />
+              <span className="gradient-text">Workflow</span> with Ease
             </h1>
 
-            <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-              TaskMgr is a powerful SaaS platform for teams to collaborate, track projects, assign tasks, and ship faster — all in one beautiful dashboard.
+            <p className="text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+              TaskMgr is the next-generation project management platform for high-performance teams. Build, track, and ship products faster.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/signup"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold text-lg hover:opacity-90 transition-all shadow-xl shadow-primary/30"
-              >
-                Start for Free <ArrowRight size={20} />
+            <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
+              <Link to="/signup" className="btn-primary px-10 py-5 text-lg group">
+                Get Started Free 
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link
-                to="/login"
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-slate-800 font-semibold text-lg border border-slate-200 hover:bg-slate-50 transition-all shadow-sm"
-              >
-                Sign In <ChevronRight size={20} />
-              </Link>
+              <button className="btn-secondary px-10 py-5 text-lg">
+                <Play className="fill-slate-900 size-4" />
+                Watch Demo
+              </button>
             </div>
 
-            <p className="text-slate-500 text-sm mt-6">
-              No credit card required · Free forever for small teams
-            </p>
-          </div>
+            <div className="mt-12 flex items-center justify-center gap-8 grayscale opacity-40">
+              <div className="font-bold text-2xl tracking-tighter">VERCEL</div>
+              <div className="font-bold text-2xl tracking-tighter">stripe</div>
+              <div className="font-bold text-2xl tracking-tighter">Linear</div>
+              <div className="font-bold text-2xl tracking-tighter">ClickUp</div>
+            </div>
+          </motion.div>
 
-          {/* Dashboard Preview Card */}
-          <div className="mt-20 relative mx-auto max-w-5xl">
-            <div className="glass rounded-2xl border border-white/60 shadow-2xl shadow-slate-200 overflow-hidden p-6">
-              {/* Mini dashboard mockup */}
-              <div className="grid grid-cols-4 gap-4 mb-6">
-                {[
-                  { label: 'Total Projects', val: '12', color: 'from-blue-500 to-blue-600' },
-                  { label: 'Total Tasks', val: '48', color: 'from-purple-500 to-purple-600' },
-                  { label: 'Completed', val: '31', color: 'from-emerald-500 to-emerald-600' },
-                  { label: 'Overdue', val: '4', color: 'from-red-500 to-red-600' },
-                ].map((s) => (
-                  <div key={s.label} className={`bg-gradient-to-br ${s.color} text-white p-4 rounded-xl`}>
-                    <p className="text-xs opacity-80 mb-1">{s.label}</p>
-                    <p className="text-2xl font-bold">{s.val}</p>
+          {/* Product Preview */}
+          <motion.div 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
+            className="mt-24 relative"
+          >
+            <div className="absolute inset-0 bg-accent/20 blur-[100px] -z-10 rounded-full scale-90" />
+            <div className="card-premium p-2 bg-slate-50/50 border-white shadow-2xl overflow-hidden group">
+              <div className="rounded-xl overflow-hidden border border-slate-200 bg-white shadow-inner aspect-[16/9] flex items-center justify-center">
+                <div className="text-center p-10">
+                  <div className="w-20 h-20 bg-accent/5 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-500">
+                    <Layout className="text-accent size-10" />
                   </div>
-                ))}
-              </div>
-              {/* Fake Kanban preview */}
-              <div className="grid grid-cols-4 gap-3">
-                {['Todo', 'In Progress', 'Review', 'Completed'].map((col, ci) => (
-                  <div key={col} className="bg-slate-50 rounded-xl p-3">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-bold text-slate-600">{col}</span>
-                      <span className="text-xs bg-white text-slate-500 rounded-md px-1.5 py-0.5 border">{ci + 2}</span>
-                    </div>
-                    {[1, 2].map(i => (
-                      <div key={i} className="bg-white rounded-lg p-2.5 mb-2 border border-slate-100 shadow-sm">
-                        <div className={`h-1.5 w-16 rounded-full mb-2 ${['bg-blue-400', 'bg-purple-400', 'bg-amber-400', 'bg-emerald-400'][ci]}`}></div>
-                        <div className="h-2 bg-slate-100 rounded w-full mb-1"></div>
-                        <div className="h-2 bg-slate-100 rounded w-3/4"></div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Interactive Dashboard Preview</h3>
+                  <p className="text-slate-500 font-medium">Coming soon: A fully interactive visual editor for your projects.</p>
+                </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="bg-gradient-to-r from-primary to-accent py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-white text-center">
-            {stats.map(s => (
-              <div key={s.label}>
-                <p className="text-4xl font-extrabold mb-2">{s.value}</p>
-                <p className="text-blue-100 text-sm font-medium">{s.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-primary font-semibold text-sm uppercase tracking-widest">Features</span>
-            <h2 className="text-4xl font-extrabold text-slate-900 mt-3 mb-4">Everything Your Team Needs</h2>
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
-              All the tools you need to manage projects, track tasks, and collaborate with your team — in one place.
+      {/* Features Grid */}
+      <section id="features" className="py-32 bg-slate-50/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="text-center mb-24">
+            <h2 className="text-4xl sm:text-5xl font-black tracking-tight text-slate-900 mb-6">
+              Everything you need to <br />
+              <span className="text-accent">scale your team</span>
+            </h2>
+            <p className="text-lg text-slate-500 max-w-2xl mx-auto font-medium">
+              TaskMgr combines simple UI with complex project management features to provide a seamless experience.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((f) => {
-              const Icon = f.icon;
-              return (
-                <div key={f.title} className="p-8 rounded-2xl border border-slate-100 card-hover bg-white shadow-sm">
-                  <div className={`w-12 h-12 rounded-xl ${f.bg} flex items-center justify-center mb-5`}>
-                    <Icon className={`h-6 w-6 ${f.color}`} />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">{f.title}</h3>
-                  <p className="text-slate-600 leading-relaxed">{f.desc}</p>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {features.map((f, i) => (
+              <motion.div 
+                key={i} 
+                variants={itemVariants}
+                className="card-premium p-8 group"
+              >
+                <div className={`w-14 h-14 rounded-2xl ${f.bg} flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-sm`}>
+                  <f.icon className={`size-7 ${f.color}`} strokeWidth={2.5} />
                 </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 hero-gradient">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-accent font-semibold text-sm uppercase tracking-widest">Testimonials</span>
-            <h2 className="text-4xl font-extrabold text-slate-900 mt-3 mb-4">Loved by Teams Worldwide</h2>
-            <p className="text-slate-600 text-lg max-w-xl mx-auto">See what our users say about TaskMgr.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((t) => (
-              <div key={t.name} className="glass p-8 rounded-2xl shadow-sm card-hover">
-                <div className="flex items-center gap-1 mb-4">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-amber-400 fill-amber-400" />
-                  ))}
-                </div>
-                <p className="text-slate-700 leading-relaxed mb-6 italic">"{t.text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold">
-                    {t.avatar}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-slate-900">{t.name}</p>
-                    <p className="text-slate-500 text-xs">{t.role}</p>
-                  </div>
-                </div>
-              </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-4">{f.title}</h3>
+                <p className="text-slate-500 leading-relaxed font-medium text-sm">
+                  {f.desc}
+                </p>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section id="pricing" className="py-24 bg-gradient-to-br from-slate-900 via-blue-950 to-purple-950">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-5xl font-extrabold text-white mb-6">
-            Ready to Get{' '}
-            <span className="gradient-text">Started?</span>
-          </h2>
-          <p className="text-slate-300 text-xl mb-10 leading-relaxed">
-            Join thousands of teams who ship faster with TaskMgr. Free to start, no credit card required.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/signup"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-bold text-lg hover:opacity-90 transition-all shadow-2xl shadow-primary/30"
-            >
-              Create Free Account <ArrowRight size={20} />
-            </Link>
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white/10 text-white font-semibold text-lg border border-white/20 hover:bg-white/20 transition-all"
-            >
-              Sign In
-            </Link>
-          </div>
+      {/* CTA Section */}
+      <section className="py-32 overflow-hidden relative">
+        <div className="absolute inset-0 bg-primary -z-10" />
+        <div className="absolute top-0 right-0 w-[50%] h-full bg-accent/20 blur-[150px] -z-10 rounded-full translate-x-1/2" />
+        
+        <div className="max-w-5xl mx-auto px-4 sm:px-8 text-center text-white">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-5xl sm:text-6xl font-black tracking-tight mb-8">
+              Join the future of <br />
+              <span className="text-accent">productivity</span>
+            </h2>
+            <p className="text-xl text-blue-100/70 mb-12 max-w-2xl mx-auto font-medium">
+              Start managing your projects like a pro today. No credit card required, free forever for small teams.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-5 justify-center">
+              <Link to="/signup" className="btn-primary bg-white text-primary px-12 py-5 text-xl shadow-white/10 hover:shadow-white/20">
+                Create Free Account
+              </Link>
+              <button className="px-12 py-5 text-xl font-bold border border-white/20 rounded-2xl hover:bg-white/5 transition-all">
+                Contact Sales
+              </button>
+            </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-950 text-slate-400 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-                <CheckSquare className="w-4 h-4 text-white" />
+      <footer className="py-24 bg-white border-t border-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
+            <div className="col-span-2">
+              <div className="flex items-center gap-2.5 mb-8">
+                <div className="w-10 h-10 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/10">
+                  <CheckSquare className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-2xl font-black tracking-tighter text-slate-900">Task<span className="gradient-text">Mgr</span></span>
               </div>
-              <span className="text-white font-bold text-lg">TaskMgr</span>
+              <p className="text-slate-500 font-medium max-w-sm leading-relaxed italic mb-8">
+                The high-performance workspace for elite teams. Architected for speed, security, and global collaboration.
+              </p>
+              <div className="flex gap-4">
+                {['Twitter', 'GitHub', 'Discord', 'LinkedIn'].map((social) => (
+                  <button key={social} className="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 hover:text-accent hover:bg-accent/5 hover:border-accent/20 transition-all">
+                    <Globe size={18} />
+                  </button>
+                ))}
+              </div>
             </div>
-            <p className="text-sm">© {new Date().getFullYear()} TaskMgr. Built with ❤️ for productive teams.</p>
-            <div className="flex gap-6 text-sm">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+
+            <div>
+              <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] mb-6">Product</h4>
+              <ul className="space-y-4">
+                {['Intelligence', 'Kanban Force', 'Team Metrics', 'Integrations'].map(item => (
+                  <li key={item}><a href="#" className="text-sm font-bold text-slate-400 hover:text-accent transition-colors">{item}</a></li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] mb-6">Company</h4>
+              <ul className="space-y-4">
+                {['About Us', 'Operatives', 'Security', 'Manifesto'].map(item => (
+                  <li key={item}><a href="#" className="text-sm font-bold text-slate-400 hover:text-accent transition-colors">{item}</a></li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] mb-6">Legal</h4>
+              <ul className="space-y-4">
+                {['Privacy Policy', 'Terms of Access', 'Cookie Protocol', 'Compliance'].map(item => (
+                  <li key={item}><a href="#" className="text-sm font-bold text-slate-400 hover:text-accent transition-colors">{item}</a></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-10 border-t border-slate-50 flex flex-col md:flex-row justify-between items-center gap-6">
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest italic">
+              © {new Date().getFullYear()} TaskMgr Global Systems Inc. All rights reserved.
+            </p>
+            <div className="flex items-center gap-8">
+              <span className="flex items-center gap-2 text-[10px] font-black text-emerald-500 uppercase tracking-widest">
+                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> All Systems Nominal
+              </span>
+              <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest italic">
+                Deployed via Railway Protocol
+              </span>
             </div>
           </div>
         </div>

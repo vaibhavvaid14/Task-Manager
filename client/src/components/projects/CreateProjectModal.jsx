@@ -101,93 +101,95 @@ const CreateProjectModal = ({ isOpen, onClose, onProjectCreated, projectToEdit =
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose} title={projectToEdit ? "Edit Project" : "Create New Project"}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Project Title *</label>
+          <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Project Title</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+            className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50"
             placeholder="e.g. Website Redesign"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Description *</label>
+          <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Description</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none min-h-[100px]"
-            placeholder="Describe the project..."
+            className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 min-h-[120px]"
+            placeholder="What's this project about?"
             required
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Deadline *</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Deadline</label>
             <input
               type="date"
               value={deadline}
               onChange={(e) => setDeadline(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+              className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50"
               required
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Priority</label>
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Priority</label>
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none bg-white"
+              className="w-full px-4 py-3 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-accent/5 focus:border-accent outline-none transition-all font-medium text-slate-700 bg-slate-50/50 appearance-none"
             >
-              <option value="Low">Low</option>
-              <option value="Medium">Medium</option>
-              <option value="High">High</option>
+              <option value="Low">Low Priority</option>
+              <option value="Medium">Medium Priority</option>
+              <option value="High">High Priority</option>
             </select>
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Team Members</label>
+          <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Team Members</label>
           {isLoadingUsers ? (
-            <div className="flex items-center gap-2 text-slate-500 text-sm">
-              <Loader2 className="animate-spin h-4 w-4" /> Loading users...
+            <div className="flex items-center gap-3 text-slate-400 text-xs font-bold py-4">
+              <Loader2 className="animate-spin h-4 w-4" /> Fetching team...
             </div>
           ) : (
-            <div className="max-h-32 overflow-y-auto border border-slate-200 rounded-lg p-2 space-y-1">
+            <div className="max-h-40 overflow-y-auto border border-slate-100 rounded-2xl p-3 space-y-1 custom-scrollbar">
               {users.map(u => (
-                <label key={u._id} className="flex items-center gap-2 p-1.5 hover:bg-slate-50 rounded cursor-pointer">
+                <label key={u._id} className="flex items-center gap-3 p-2 hover:bg-slate-50 rounded-xl cursor-pointer group transition-colors">
                   <input
                     type="checkbox"
                     checked={teamMembers.includes(u._id)}
                     onChange={() => handleMemberToggle(u._id)}
-                    className="rounded text-primary focus:ring-primary"
+                    className="w-4 h-4 rounded border-slate-200 text-accent focus:ring-accent transition-all"
                   />
-                  <span className="text-sm text-slate-700">{u.name} <span className="text-slate-400 text-xs">({u.role})</span></span>
+                  <span className="text-sm font-bold text-slate-600 group-hover:text-slate-900 transition-colors">
+                    {u.name} <span className="text-slate-400 font-medium ml-1">({u.role})</span>
+                  </span>
                 </label>
               ))}
             </div>
           )}
         </div>
 
-        <div className="pt-4 flex justify-end gap-3 border-t border-slate-100 mt-6">
+        <div className="pt-6 flex justify-end gap-3 border-t border-slate-50">
           <button
             type="button"
             onClick={handleClose}
-            className="px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+            className="btn-secondary"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-4 py-2 text-sm font-medium text-white bg-primary hover:bg-primary-dark rounded-lg flex items-center gap-2 transition-colors disabled:opacity-70"
+            className="btn-primary"
           >
             {isSubmitting && <Loader2 className="animate-spin h-4 w-4" />}
-            {projectToEdit ? 'Update Project' : 'Create Project'}
+            {projectToEdit ? 'Update Project' : 'Launch Project'}
           </button>
         </div>
       </form>
